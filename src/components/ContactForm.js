@@ -10,6 +10,18 @@ const ContactForm = (props) => {
 
   const [values, setValues] = useState(intialFieldValues);
 
+  // This logic populates the form when cicking on Edit so we can edit the information.
+  useEffect(() => {
+    if (props.currentId === '')
+      setValues({
+        ...intialFieldValues,
+      });
+    else
+      setValues({
+        ...props.contactObjects[props.currentId],
+      });
+  }, [props.currentId, props.contactObjects]);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setValues({
@@ -84,7 +96,7 @@ const ContactForm = (props) => {
       <div className='form-control'>
         <input
           type='submit'
-          value='Save'
+          value={props.currentId === '' ? 'Save' : 'Update'}
           className='btn btn-primary btn-block'
         />
       </div>

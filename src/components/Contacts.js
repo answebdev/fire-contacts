@@ -5,6 +5,9 @@ import ContactForm from './ContactForm';
 const Contacts = () => {
   const [contactObjects, setContactObjects] = useState({}); // Could also be set to empty array
 
+  // Needed for edit and delete actions:
+  const [currentId, setCurrentId] = useState('');
+
   // This is needed in order for us to display the data in the browser (see below in 'return')
   useEffect(() => {
     // Retrieve information from the database.
@@ -18,13 +21,23 @@ const Contacts = () => {
   }, []);
 
   const addOrEdit = (obj) => {
-    // Add a new contact.
-    fireDb.child('contacts').push(obj, (err) => {
-      if (err) {
-        console.log(err);
-      }
-    });
-    console.log('Contact added');
+    if (currentId === '')
+      // Add a new contact.
+      fireDb.child('contacts').push(obj, (err) => {
+        if (err) console.log(err);
+        else {
+          setCurrentId('');
+        }
+      });
+    // console.log('Contact added')
+    // Update contact.
+    else {
+      fireDb.child(`contacts/${currentId}`).set(obj, (err) => {
+        if (err) console.log(err);
+        // Reset form
+        else setCurrentId('');
+      });
+    }
   };
 
   return (
@@ -36,7 +49,7 @@ const Contacts = () => {
       </div>
       <div className='row'>
         <div className='col-md-5'>
-          <ContactForm addOrEdit={addOrEdit} />
+          <ContactForm {...{ addOrEdit, currentId, contactObjects }} />
         </div>
         <div className='col-md-7'>
           <table className='table table-borderless table-stripped'>
@@ -61,7 +74,19 @@ const Contacts = () => {
                       <td>{contactObjects[id].mobile}</td>
                       <td>{contactObjects[id].email}</td>
                       {/* <td>{contactObjects[id].address}</td> */}
-                      <td></td>
+                      <td>
+                        <a
+                          className='btn text-primary'
+                          onClick={() => {
+                            setCurrentId(id);
+                          }}
+                        >
+                          <i className='fas fa-pencil-alt'></i>
+                        </a>
+                        <a className='btn text-danger'>
+                          <i className='fas fa-trash-alt'></i>
+                        </a>
+                      </td>
                     </tr>
                   );
                 })
