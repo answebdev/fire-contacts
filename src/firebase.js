@@ -1,4 +1,5 @@
-import * as firebase from 'firebase'
+import firebase from 'firebase';
+// import firebase from 'firebase/app';
 
 // Your web app's Firebase configuration
 var firebaseConfig = {
@@ -11,4 +12,10 @@ var firebaseConfig = {
   appId: '1:544444668636:web:db83a25c3c7a74789c7219',
 };
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+
+// Save in a variable ('fireDb') - we need this object to make a reference into our Firebase database.
+const fireDb = firebase.initializeApp(firebaseConfig);
+
+// Export the database reference -
+// import it in Contacts.js so that we can do CRUD operations inside the database
+export default fireDb.database().ref();

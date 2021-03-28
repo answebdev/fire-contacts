@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const ContactForm = () => {
+const ContactForm = (props) => {
   const intialFieldValues = {
     fullName: '',
     mobile: '',
@@ -10,9 +10,22 @@ const ContactForm = () => {
 
   const [values, setValues] = useState(intialFieldValues);
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setValues({
+      ...values,
+      [name]: value,
+    });
+  };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    props.addOrEdit(values);
+  };
+
   // Set 'autoComplete' to 'off' in order to prevent from showing previously posted form data.
   return (
-    <form autoComplete='off'>
+    <form autoComplete='off' onSubmit={handleFormSubmit}>
       <div className='form-group input-group'>
         <div className='input-group-prepend'>
           <div className='input-group-text'>
@@ -25,6 +38,7 @@ const ContactForm = () => {
           placeholder='Full Name'
           name='fullName'
           value={values.fullName}
+          onChange={handleInputChange}
         />
       </div>
       <div className='form-row'>
@@ -39,6 +53,7 @@ const ContactForm = () => {
             placeholder='Mobile'
             name='mobile'
             value={values.mobile}
+            onChange={handleInputChange}
           />
         </div>
         <div className='form-group input-group col-md-6'>
@@ -52,8 +67,26 @@ const ContactForm = () => {
             placeholder='Email'
             name='email'
             value={values.email}
+            onChange={handleInputChange}
           />
         </div>
+      </div>
+
+      <div className='form-group'>
+        <textarea
+          className='form-control'
+          placeholder='Address'
+          name='address'
+          value={values.address}
+          onChange={handleInputChange}
+        />
+      </div>
+      <div className='form-control'>
+        <input
+          type='submit'
+          value='Save'
+          className='btn btn-primary btn-block'
+        />
       </div>
     </form>
   );

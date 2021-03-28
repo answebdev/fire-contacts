@@ -1,7 +1,15 @@
 import React, { Fragment } from 'react';
+import fireDb from '../firebase';
 import ContactForm from './ContactForm';
 
 const Contacts = () => {
+  const addOrEdit = (obj) => {
+    // Add a new contact.
+    fireDb.child('contacts').push(obj, (err) => {
+      if (err) console.log(err);
+    });
+  };
+
   return (
     <>
       <div className='jumbotron jumbotron-fluid'>
@@ -11,7 +19,7 @@ const Contacts = () => {
       </div>
       <div className='row'>
         <div className='col-md-5'>
-          <ContactForm />
+          <ContactForm addOrEdit={addOrEdit} />
         </div>
         <div className='col-md-7'>
           <div>List of contacts</div>
