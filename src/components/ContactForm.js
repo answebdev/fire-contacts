@@ -20,6 +20,7 @@ const ContactForm = (props) => {
       setValues({
         ...props.contactObjects[props.currentId],
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.currentId, props.contactObjects]);
 
   const handleInputChange = (e) => {
