@@ -16,6 +16,8 @@ const Contacts = () => {
         setContactObjects({
           ...snapshot.val(),
         });
+      } else {
+        setContactObjects({});
       }
     });
   }, []);
@@ -33,6 +35,17 @@ const Contacts = () => {
     // Update contact.
     else {
       fireDb.child(`contacts/${currentId}`).set(obj, (err) => {
+        if (err) console.log(err);
+        // Reset form
+        else setCurrentId('');
+      });
+    }
+  };
+
+  // Delete contact.
+  const onDelete = (key) => {
+    if (window.confirm('Are you sure you want to delete this contact?')) {
+      fireDb.child(`contacts/${key}`).remove((err) => {
         if (err) console.log(err);
         // Reset form
         else setCurrentId('');
@@ -83,7 +96,12 @@ const Contacts = () => {
                         >
                           <i className='fas fa-pencil-alt'></i>
                         </a>
-                        <a className='btn text-danger'>
+                        <a
+                          className='btn text-danger'
+                          onClick={() => {
+                            onDelete(id);
+                          }}
+                        >
                           <i className='fas fa-trash-alt'></i>
                         </a>
                       </td>
