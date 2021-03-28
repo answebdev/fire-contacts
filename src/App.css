@@ -1,3 +1,14 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Fix horizontal overflow issue: */
+body {
+  overflow-x: hidden;
+}
+
 .App {
   text-align: center;
 }

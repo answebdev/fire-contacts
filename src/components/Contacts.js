@@ -70,7 +70,7 @@ const Contacts = () => {
               <tr>
                 <th>Full Name</th>
                 <th>Mobile</th>
-                <th>Emile</th>
+                <th>Email</th>
                 {/* <th>Address</th> */}
                 <th>Actions</th>
               </tr>
